@@ -267,7 +267,9 @@ function receivedMessage(event) {
   if (messageText) {
 
 console.log('**********************')
-    dicApi.sendTranslationRequest(messageText, sendTextMessage);
+    dicApi.sendTranslationRequest(messageText, function(result) {
+        sendTextMessage(senderID, result)
+    });
 console.log('**********************')
 
     // If we receive a text message, check to see if it matches any special
