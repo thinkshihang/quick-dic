@@ -329,7 +329,7 @@ console.log('**********************')
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        // sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");

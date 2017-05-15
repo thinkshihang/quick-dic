@@ -21,7 +21,6 @@ module.exports = {
 // console.log(DICTIONARY_SERVER_URL + 'entries?headword=' + text + '&apikey=PEARSON_API_KEY')
 console.log(error)
 console.log(response.statusCode)
-
             if (!error && response.statusCode == 200) {
                 var payloadJSON = {}
                 try {
