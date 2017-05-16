@@ -28,7 +28,12 @@ console.log(response.statusCode)
                 } catch (e) {
                     payloadJSON = body
                 }
-console.log(payloadJSON.results[0].senses[0].translation)
+                payloadJSON.results.forEach(function(result) {
+                    if (result.headword == text) {
+                        callback(result.senses[0].translation)
+                        return;
+                    }
+                })
                 callback(payloadJSON.results[0].senses[0].translation)
             } else {
                 callback([])
