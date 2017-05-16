@@ -28,17 +28,13 @@ console.log('status code is ' + response.statusCode)
                 } catch (e) {
                     payloadJSON = body
                 }
-console.log('111' + payloadJSON.results.length)
                 for (var i = 0; i < payloadJSON.results.length; i++) {
-console.log('222' + payloadJSON.results[i].headword)
-console.log('333' + text)
                     if (payloadJSON.results[i].headword.toUpperCase() == text.toUpperCase()) {
-console.log('444' + payloadJSON.results[i].senses[0].translation)
                         callback(payloadJSON.results[i].senses[0].translation)
-                        break
+                        return
                     }
                 }
-                // callback(payloadJSON.results[0].senses[0].translation)
+                callback(payloadJSON.results[0].senses[0].translation)
             } else {
                 callback('Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your hel ')
             }
