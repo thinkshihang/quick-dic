@@ -28,7 +28,9 @@ console.log('status code is ' + response.statusCode)
                 } catch (e) {
                     payloadJSON = body
                 }
+console.log(payloadJSON)
                 for (var i = 0; i < payloadJSON.results.length; i++) {
+console.log(payloadJSON.results[i])                    
                     if (payloadJSON.results[i].headword == text) {
 console.log(payloadJSON.results[i].senses[0].translation)
                         callback(payloadJSON.results[i].senses[0].translation)
