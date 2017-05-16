@@ -28,11 +28,12 @@ console.log('status code is ' + response.statusCode)
                 } catch (e) {
                     payloadJSON = body
                 }
-console.log(payloadJSON)
+console.log('111' + payloadJSON.results.length)
                 for (var i = 0; i < payloadJSON.results.length; i++) {
-console.log(payloadJSON.results[i])                    
+console.log('222' + payloadJSON.results[i].headword)
+console.log('333' + text)
                     if (payloadJSON.results[i].headword == text) {
-console.log(payloadJSON.results[i].senses[0].translation)
+console.log('333' + payloadJSON.results[i].senses[0].translation)
                         callback(payloadJSON.results[i].senses[0].translation)
                         break
                     }
