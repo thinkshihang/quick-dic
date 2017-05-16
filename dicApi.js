@@ -32,8 +32,8 @@ console.log('111' + payloadJSON.results.length)
                 for (var i = 0; i < payloadJSON.results.length; i++) {
 console.log('222' + payloadJSON.results[i].headword)
 console.log('333' + text)
-                    if (payloadJSON.results[i].headword == text) {
-console.log('333' + payloadJSON.results[i].senses[0].translation)
+                    if (payloadJSON.results[i].headword.toUpperCase() == text.toUpperCase()) {
+console.log('444' + payloadJSON.results[i].senses[0].translation)
                         callback(payloadJSON.results[i].senses[0].translation)
                         break
                     }
