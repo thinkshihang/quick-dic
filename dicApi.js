@@ -28,15 +28,15 @@ console.log(response.statusCode)
                 } catch (e) {
                     payloadJSON = body
                 }
-                payloadJSON.results.forEach(function(result) {
-                    if (result.headword == text) {
-                        callback(result.senses[0].translation)
-                        return;
+                for (var i = 0; i < payloadJSON.results.length; i++) {
+                    if (payloadJSON.results[i].headword == text) {
+                        callback(payloadJSON.results[i].senses[0].translation)
+                        return
                     }
-                })
+                }
                 callback(payloadJSON.results[0].senses[0].translation)
             } else {
-                callback([])
+                callback('Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your hel ')
             }
         })
     }
