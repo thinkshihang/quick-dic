@@ -19,8 +19,8 @@ module.exports = {
         }, function(error, response, body) {
 
 // console.log(DICTIONARY_SERVER_URL + 'entries?headword=' + text + '&apikey=PEARSON_API_KEY')
-console.log(error)
-console.log(response.statusCode)
+console.log('error is ' + error)
+console.log('status code is ' + response.statusCode)
             if (!error && response.statusCode == 200) {
                 var payloadJSON = {}
                 try {
@@ -30,11 +30,12 @@ console.log(response.statusCode)
                 }
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     if (payloadJSON.results[i].headword == text) {
+console.log(payloadJSON.results[i].senses[0].translation)
                         callback(payloadJSON.results[i].senses[0].translation)
-                        return
+                        break
                     }
                 }
-                callback(payloadJSON.results[0].senses[0].translation)
+                // callback(payloadJSON.results[0].senses[0].translation)
             } else {
                 callback('Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your hel ')
             }
