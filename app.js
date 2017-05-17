@@ -274,14 +274,14 @@ function receivedMessage(event) {
 console.log('**********************')
     var Typo = require('typo-js');
     var spellChecker = new Typo("en_US")
-    var suggestions
     var is_spelled_correctly = spellChecker.check(messageText)
     if (is_spelled_correctly) {
         dicApi.sendTranslationRequest(messageText, function(result) {
             sendTextMessage(senderID, result)
         });
     } else {
-        suggestions = spellChecker.suggest(messageText)
+        var suggestions = spellChecker.suggest(messageText)
+        sendQuickReply(senderID, messageText, suggestions);
     }
     console.log(is_spelled_correctly)
     console.log(spellChecker.suggest(messageText))
@@ -326,9 +326,9 @@ console.log('**********************')
         sendReceiptMessage(senderID);
         break;
 
-      case 'quick reply':
-        sendQuickReply(senderID, messageText, suggestions);
-        break;
+    //   case 'quick reply':
+    //     sendQuickReply(senderID);
+    //     break;
 
       case 'read receipt':
         sendReadReceipt(senderID);
@@ -745,11 +745,6 @@ function sendQuickReply(recipientId, text, suggestions) {
           "content_type":"text",
           "title":suggestions[1],
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
-        },
-        {
-          "content_type":"text",
-          "title":suggestions[2],
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
         },
         {
           "content_type":"text",
