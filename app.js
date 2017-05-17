@@ -273,7 +273,7 @@ function receivedMessage(event) {
 
 console.log('**********************')
     var Typo = require('typo-js');
-    var spellChecker = new Typo("en_us")
+    var spellChecker = new Typo("en_US")
     var suggestions
     var is_spelled_correctly = spellChecker.check(messageText)
     if (is_spelled_correctly) {
