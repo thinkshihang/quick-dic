@@ -34,7 +34,11 @@ console.log('status code is ' + response.statusCode)
                         return
                     }
                 }
-                callback(payloadJSON.results[0].senses[0].translation)
+                if (payloadJSON.results.length == 0) {
+                    callback(text + ' is not a word in my dictionary.')
+                } else {
+                    callback(payloadJSON.results[0].senses[0].translation)
+                }
             } else {
                 callback('Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your hel ')
             }
