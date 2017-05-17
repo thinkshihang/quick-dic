@@ -265,7 +265,11 @@ function receivedMessage(event) {
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
 
-    sendTextMessage(senderID, "Quick reply tapped");
+    // sendTextMessage(senderID, "Quick reply tapped");
+    dicApi.sendTranslationRequest(messageText, function(result) {
+        sendTextMessage(senderID, result)
+    });
+    
     return;
   }
 
