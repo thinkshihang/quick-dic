@@ -151,9 +151,14 @@ app.get('/test', function(req, res) {
     console.log('**********************')
         console.log(req.query.text)
         let messageText = req.query.text
-        dicApi.sendTranslationRequest(messageText, function(body) {
-            console.log(body)
-        });
+        // dicApi.sendTranslationRequest(messageText, function(body) {
+        //     console.log(body)
+        // });
+        var Typo = require('typo-js');
+        var spellChecker = new Typo("en_us")
+        var is_spelled_correctly = spellChecker.check(req.query.text)
+        console.log(is_spelled_correctly)
+        console.log(spellChecker.suggest(req.query.text))
     console.log('**********************')
 });
 
@@ -267,9 +272,22 @@ function receivedMessage(event) {
   if (messageText) {
 
 console.log('**********************')
-    dicApi.sendTranslationRequest(messageText, function(result) {
-        sendTextMessage(senderID, result)
-    });
+    var Typo = require('typo-js');
+    var spellChecker = new Typo("en_us")
+    var suggestions
+    var is_spelled_correctly = spellChecker.check(messageText)
+    if (is_spelled_correctly) {
+        dicApi.sendTranslationRequest(messageText, function(result) {
+            sendTextMessage(senderID, result)
+        });
+    } else {
+        suggestions = spellChecker.suggest(messageText)
+    }
+    console.log(is_spelled_correctly)
+    console.log(spellChecker.suggest(messageText))
+
+
+
 console.log('**********************')
 
     // If we receive a text message, check to see if it matches any special
@@ -309,7 +327,7 @@ console.log('**********************')
         break;
 
       case 'quick reply':
-        sendQuickReply(senderID);
+        sendQuickReply(senderID, messageText, suggestions);
         break;
 
       case 'read receipt':
@@ -710,29 +728,34 @@ function sendReceiptMessage(recipientId) {
  * Send a message with Quick Reply buttons.
  *
  */
-function sendQuickReply(recipientId) {
+function sendQuickReply(recipientId, text, suggestions) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
-      text: "What's your favorite movie genre?",
+      text: "Do you mean:",
       quick_replies: [
         {
           "content_type":"text",
-          "title":"Action",
+          "title":suggestions[0],
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
         },
         {
           "content_type":"text",
-          "title":"Comedy",
+          "title":suggestions[1],
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
         },
         {
           "content_type":"text",
-          "title":"Drama",
+          "title":suggestions[2],
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
-        }
+        },
+        {
+          "content_type":"text",
+          "title":"No, continue with " + text,
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+        },
       ]
     }
   };
