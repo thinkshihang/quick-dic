@@ -266,10 +266,11 @@ function receivedMessage(event) {
       messageId, quickReplyPayload);
 
     // sendTextMessage(senderID, "Quick reply tapped");
+    sendTypingOn(senderID)
     dicApi.sendTranslationRequest(messageText, function(result) {
         sendTextMessage(senderID, result)
     });
-    
+    sendTypingOff(senderID)
     return;
   }
 
@@ -278,6 +279,8 @@ function receivedMessage(event) {
 console.log('**********************')
     var Typo = require('typo-js');
     var spellChecker = new Typo("en_US")
+
+    sendTypeOn(senderID)
     var is_spelled_correctly = spellChecker.check(messageText)
     if (is_spelled_correctly) {
         dicApi.sendTranslationRequest(messageText, function(result) {
@@ -287,6 +290,7 @@ console.log('**********************')
         var suggestions = spellChecker.suggest(messageText)
         sendQuickReply(senderID, messageText, suggestions);
     }
+    sendTypeOff(senderID)
     console.log(is_spelled_correctly)
     console.log(spellChecker.suggest(messageText))
 
