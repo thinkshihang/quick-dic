@@ -280,7 +280,7 @@ console.log('**********************')
     var Typo = require('typo-js');
     var spellChecker = new Typo("en_US")
 
-    sendTypeOn(senderID)
+    sendTypingOn(senderID)
     var is_spelled_correctly = spellChecker.check(messageText)
     if (is_spelled_correctly) {
         dicApi.sendTranslationRequest(messageText, function(result) {
@@ -290,7 +290,7 @@ console.log('**********************')
         var suggestions = spellChecker.suggest(messageText)
         sendQuickReply(senderID, messageText, suggestions);
     }
-    sendTypeOff(senderID)
+    sendTypingOff(senderID)
     console.log(is_spelled_correctly)
     console.log(spellChecker.suggest(messageText))
 
