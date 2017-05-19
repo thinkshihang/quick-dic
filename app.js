@@ -413,17 +413,10 @@ function receivedPostback(event) {
 
   var payloadJSON = {}
   try {
-console.log("1111")
       payloadJSON = JSON.parse(payload)
   } catch (e) {
-console.log("2222")  
-console.log(e)
       payloadJSON = payload
   }
-
-console.log(payloadJSON)
-console.log(typeof(payloadJSON))
-console.log("******* " + payloadJSON.action)
 
   if (payloadJSON.action == 'GET_STARTED') {
         sendTextMessage(senderID, "Welcome! The zen of this dictionary is QUICK. Currently it allows you type in an English word and reply with the Chinese translation. This app is still in process. Any suggestion and feedback are appreciated. Hang Shi / thinkshihang@gmail.com" );
