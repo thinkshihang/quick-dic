@@ -410,6 +410,18 @@ function receivedPostback(event) {
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
+
+  var payloadJSON = {}
+  try {
+      payloadJSON = JSON.parse(payload)
+  } catch (e) {
+      payloadJSON = payload
+  }
+
+  if (payloadJSON.action == 'GET_STARTED') {
+        sendTextMessage(senderID, "Welcome! The zen of this dictionary is QUICK. Currently it allows you type in an English word and reply with the Chinese translation. This app is still in process. Any suggestion and feedback are appreciated. Hang Shi / thinkshihang@gmail.com" );
+        return;
+  }
   sendTextMessage(senderID, "Postback called");
 }
 
