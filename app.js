@@ -418,6 +418,9 @@ function receivedPostback(event) {
       payloadJSON = payload
   }
 
+console.log(payloadJSON)
+console.log("******* " + payloadJSON.action)
+
   if (payloadJSON.action == 'GET_STARTED') {
         sendTextMessage(senderID, "Welcome! The zen of this dictionary is QUICK. Currently it allows you type in an English word and reply with the Chinese translation. This app is still in process. Any suggestion and feedback are appreciated. Hang Shi / thinkshihang@gmail.com" );
         return;
