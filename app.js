@@ -413,12 +413,15 @@ function receivedPostback(event) {
 
   var payloadJSON = {}
   try {
+console.log("1111")
       payloadJSON = JSON.parse(payload)
   } catch (e) {
+console.log("2222")      
       payloadJSON = payload
   }
 
 console.log(payloadJSON)
+console.log(typeof(payloadJSON))
 console.log("******* " + payloadJSON.action)
 
   if (payloadJSON.action == 'GET_STARTED') {
