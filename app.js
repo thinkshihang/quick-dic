@@ -416,7 +416,8 @@ function receivedPostback(event) {
 console.log("1111")
       payloadJSON = JSON.parse(payload)
   } catch (e) {
-console.log("2222")      
+console.log("2222")  
+console.log(e)
       payloadJSON = payload
   }
 
