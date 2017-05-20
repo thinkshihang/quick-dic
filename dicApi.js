@@ -6,7 +6,10 @@ const PEARSON_API_KEY = (process.env.DICTIONARY_API_KEY) ?
   process.env.DICTIONARY_API_KEY :
   config.get('appSecret');
 
-const DICTIONARY_SERVER_URL = "https://api.pearson.com/v2/dictionaries/ldec/"
+const DICTIONARY_SERVER_URL = "https://api.pearson.com/v2/dictionaries/"
+
+const EN_CH_DICT = "ldec" // Longman English-Chinese Dictionary of 100,000 Words (New 2nd Edition)
+const LDOCE5 = "ldoce5" // Longman Dictionary of Contemporary English (5th edition)
 
 module.exports = {
     sendTranslationRequest: function(text, callback) {
@@ -28,16 +31,34 @@ console.log('status code is ' + response.statusCode)
                 } catch (e) {
                     payloadJSON = body
                 }
+
+                var resultCh, resultEn
                 for (var i = 0; i < payloadJSON.results.length; i++) {
-                    if (payloadJSON.results[i].headword.toUpperCase() == text.toUpperCase()) {
-                        callback(payloadJSON.results[i].senses[0].translation)
-                        return
+                    let result = payloadJSON.results[i]
+                    if (result.headword.toUpperCase() == text.toUpperCase()) {
+                        if (result.datasets.includes(EN_CH_DICT)) {
+                            resultCh = result.senses[0].translation
+                        } else if (result.datasets.includes(LDOCE5)) {
+                            resultEn = result.senses[0].definition[0]
+                        }
+                        if (resultEn && resultCh) {
+                            break
+                        }
                     }
                 }
-                if (payloadJSON.results.length == 0) {
-                    callback(text + ' is not a word in my dictionary.')
+                if (resultCh || resultEn) {
+                    if (resultCh) {
+                        callback(resultCh)
+                    }
+                    if (resultEn) {
+                        callback(resultEn)
+                    }
                 } else {
-                    callback(payloadJSON.results[0].senses[0].translation)
+                    if (payloadJSON.results.length == 0) {
+                        callback(text + ' is not a word in my dictionary.')
+                    } else {
+                        callback(payloadJSON.results[0].senses[0].translation)
+                    }
                 }
             } else {
                 callback('Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your hel ')

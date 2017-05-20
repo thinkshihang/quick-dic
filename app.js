@@ -151,14 +151,16 @@ app.get('/test', function(req, res) {
     console.log('**********************')
         console.log(req.query.text)
         let messageText = req.query.text
-        // dicApi.sendTranslationRequest(messageText, function(body) {
-        //     console.log(body)
-        // });
-        var Typo = require('typo-js');
-        var spellChecker = new Typo("en_us")
-        var is_spelled_correctly = spellChecker.check(req.query.text)
-        console.log(is_spelled_correctly)
-        console.log(spellChecker.suggest(req.query.text))
+        dicApi.sendTranslationRequest(messageText, function(body) {
+            console.log(body)
+        });
+
+        // test typo
+        // var Typo = require('typo-js');
+        // var spellChecker = new Typo("en_us")
+        // var is_spelled_correctly = spellChecker.check(req.query.text)
+        // console.log(is_spelled_correctly)
+        // console.log(spellChecker.suggest(req.query.text))
     console.log('**********************')
 });
 
