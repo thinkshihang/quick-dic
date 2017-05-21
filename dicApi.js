@@ -40,10 +40,8 @@ console.log('status code is ' + response.statusCode)
                     if (result.headword.toUpperCase() == text.toUpperCase()) {
                         if (result.datasets.includes(EN_CH_DICT)) {
                             if (results.EN_CH_DICT) {
-console.log("11111")
                                 results.EN_CH_DICT[0].content += " (" + result.part_of_speech + ") " + result.senses[0].translation
                             } else {
-console.log("22222")
                                 results.EN_CH_DICT = []
                                 results.EN_CH_DICT.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].translation})
                             }
@@ -62,9 +60,7 @@ console.log("22222")
                         }
                     }
                 }
-console.log(results)
                 if (Object.keys(results).length > 0) {
-console.log(utilities.getValues(results))
                     callback(utilities.getValues(results))
                 } else {
                     if (payloadJSON.results.length == 0) {
