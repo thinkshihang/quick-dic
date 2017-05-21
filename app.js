@@ -285,8 +285,17 @@ console.log('**********************')
     sendTypingOn(senderID)
     var is_spelled_correctly = spellChecker.check(messageText)
     if (is_spelled_correctly) {
-        dicApi.sendTranslationRequest(messageText, function(result) {
-            sendTextMessage(senderID, result)
+        dicApi.sendTranslationRequest(messageText, function(results) {
+            results.forEach(function(result) {
+                switch (result.type) {
+                    case "text":
+                        sendTextMessage(senderID, result.content)
+                        break
+                    case "audio":
+                        sendAudioMessage(senderID, result.content)
+                }
+            })
+
         });
     } else {
         var suggestions = spellChecker.suggest(messageText)
@@ -513,7 +522,7 @@ function sendGifMessage(recipientId) {
  * Send audio using the Send API.
  *
  */
-function sendAudioMessage(recipientId) {
+function sendAudioMessage(recipientId, resourceUrl) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -522,7 +531,7 @@ function sendAudioMessage(recipientId) {
       attachment: {
         type: "audio",
         payload: {
-          url: SERVER_URL + "/assets/sample.mp3"
+          url: resourceUrl
         }
       }
     }

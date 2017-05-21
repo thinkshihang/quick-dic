@@ -6,7 +6,7 @@ const PEARSON_API_KEY = (process.env.DICTIONARY_API_KEY) ?
   process.env.DICTIONARY_API_KEY :
   config.get('appSecret');
 
-const DICTIONARY_SERVER_URL = "https://api.pearson.com/v2/dictionaries/"
+const DICTIONARY_SERVER_URL = "https://api.pearson.com/"
 
 const EN_CH_DICT = "ldec" // Longman English-Chinese Dictionary of 100,000 Words (New 2nd Edition)
 const LDOCE5 = "ldoce5" // Longman Dictionary of Contemporary English (5th edition)
@@ -14,7 +14,7 @@ const LDOCE5 = "ldoce5" // Longman Dictionary of Contemporary English (5th editi
 module.exports = {
     sendTranslationRequest: function(text, callback) {
         request({
-            url: DICTIONARY_SERVER_URL + 'entries?headword=' + text + '&apikey=' + PEARSON_API_KEY,
+            url: DICTIONARY_SERVER_URL + '/v2/dictionaries/entries?headword=' + text + '&apikey=' + PEARSON_API_KEY + '&limit=25',
             method: 'GET',
             headers: {
                 'Content_type': 'application/json'
@@ -32,36 +32,35 @@ console.log('status code is ' + response.statusCode)
                     payloadJSON = body
                 }
 
-                var resultCh, resultEn
+                var results = []
+                // var resultCh, resultEn
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
                     if (result.headword.toUpperCase() == text.toUpperCase()) {
                         if (result.datasets.includes(EN_CH_DICT)) {
-                            resultCh = result.senses[0].translation
-                        } else if (result.datasets.includes(LDOCE5)) {
-                            resultEn = result.senses[0].definition[0]
+                            results.push({"type": "text", "content": result.senses[0].translation})
+                        } else if (result.datasets.includes(LDOCE5) && result.pronunciations && result.pronunciations.length > 0) {
+                            results.push({"type": "text", "content": result.senses[0].definition[0]})
+                            results.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[1].url})
                         }
-                        if (resultEn && resultCh) {
+                        if (results.length >= 2) {
                             break
                         }
                     }
                 }
-                if (resultCh || resultEn) {
-                    if (resultCh) {
-                        callback(resultCh)
-                    }
-                    if (resultEn) {
-                        callback(resultEn)
-                    }
+console.log("11111")
+console.log(results)
+                if (results.length > 0) {
+                    callback(results)
                 } else {
                     if (payloadJSON.results.length == 0) {
-                        callback(text + ' is not a word in my dictionary.')
+                        callback({"type": "text", "content": text + ' is not a word in my dictionary.'})
                     } else {
-                        callback(payloadJSON.results[0].senses[0].translation)
+                        callback({"type": "text", "content": payloadJSON.results[0].senses[0].translation})
                     }
                 }
             } else {
-                callback('Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your hel ')
+                callback({"type": "text", "content": 'Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your help '})
             }
         })
     }
