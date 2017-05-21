@@ -41,9 +41,13 @@ console.log('status code is ' + response.statusCode)
                             results.push({"type": "text", "content": result.senses[0].translation})
                         } else if (result.datasets.includes(LDOCE5) && result.pronunciations && result.pronunciations.length > 0) {
                             results.push({"type": "text", "content": result.senses[0].definition[0]})
-                            results.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[0].url})
+                            if (result.pronunciations[1]) {
+                                results.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[0].url})
+                            } else {
+                                results.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[0].audio[1].url})
+                            }
                         }
-                        if (results.length >= 2) {
+                        if (results.length >= 3) {
                             break
                         }
                     }
