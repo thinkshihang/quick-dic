@@ -286,14 +286,16 @@ console.log('**********************')
     var is_spelled_correctly = spellChecker.check(messageText)
     if (is_spelled_correctly) {
         dicApi.sendTranslationRequest(messageText, function(results) {
-            results.forEach(function(result) {
-                switch (result.type) {
-                    case "text":
-                        sendTextMessage(senderID, result.content)
-                        break
-                    case "audio":
-                        sendAudioMessage(senderID, result.content)
-                }
+            results.forEach(function(messages) {
+                messages.forEach(function(message) {
+                    switch (message.type) {
+                        case "text":
+                            sendTextMessage(senderID, message.content)
+                            break
+                        case "audio":
+                            sendAudioMessage(senderID, message.content)
+                    }
+                })
             })
 
         });

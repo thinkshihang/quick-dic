@@ -1,6 +1,7 @@
 const
     request = require('request'),
-    config = require('config');
+    config = require('config'),
+    utilities = require('./utilities');
 
 const PEARSON_API_KEY = (process.env.DICTIONARY_API_KEY) ?
   process.env.DICTIONARY_API_KEY :
@@ -32,39 +33,48 @@ console.log('status code is ' + response.statusCode)
                     payloadJSON = body
                 }
 
-                var results = []
+                var results = {}
                 // var resultCh, resultEn
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
                     if (result.headword.toUpperCase() == text.toUpperCase()) {
                         if (result.datasets.includes(EN_CH_DICT)) {
-                            results.push({"type": "text", "content": result.senses[0].translation})
-                        } else if (result.datasets.includes(LDOCE5) && result.pronunciations && result.pronunciations.length > 0) {
-                            results.push({"type": "text", "content": result.senses[0].definition[0]})
-                            if (result.pronunciations[1]) {
-                                results.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[0].url})
+                            if (results.EN_CH_DICT) {
+console.log("11111")
+                                results.EN_CH_DICT[0].content += " (" + result.part_of_speech + ") " + result.senses[0].translation
                             } else {
-                                results.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[0].audio[1].url})
+console.log("22222")
+                                results.EN_CH_DICT = []
+                                results.EN_CH_DICT.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].translation})
                             }
-                        }
-                        if (results.length >= 3) {
-                            break
+                        } else if (result.datasets.includes(LDOCE5) && result.pronunciations && result.pronunciations.length > 0) {
+                            if (results.LDOCE5) {
+                                results.LDOCE5[0].content += " (" + result.part_of_speech + ") " + result.senses[0].definition[0]
+                            } else {
+                                results.LDOCE5 = []
+                                results.LDOCE5.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].definition[0]})
+                                if (result.pronunciations[1]) {
+                                    results.LDOCE5.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[0].url})
+                                } else {
+                                    results.LDOCE5.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[0].audio[1].url})
+                                }
+                            }
                         }
                     }
                 }
-console.log("11111")
 console.log(results)
-                if (results.length > 0) {
-                    callback(results)
+                if (Object.keys(results).length > 0) {
+console.log(utilities.getValues(results))
+                    callback(utilities.getValues(results))
                 } else {
                     if (payloadJSON.results.length == 0) {
-                        callback({"type": "text", "content": text + ' is not a word in my dictionary.'})
+                        callback([{"type": "text", "content": text + ' is not a word in my dictionary.'}])
                     } else {
-                        callback({"type": "text", "content": payloadJSON.results[0].senses[0].translation})
+                        callback([{"type": "text", "content": payloadJSON.results[0].senses[0].translation}])
                     }
                 }
             } else {
-                callback({"type": "text", "content": 'Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your help '})
+                callback([{"type": "text", "content": 'Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your help '}])
             }
         })
     }
