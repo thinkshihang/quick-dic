@@ -288,6 +288,7 @@ function receivedMessage(event) {
             })
         })
     });
+
     sendTypingOff(senderID)
     return;
   }
@@ -797,7 +798,7 @@ function sendQuickReply(recipientId, text, suggestions) {
         },
         {
           "content_type":"text",
-          "title":"No, continue with " + text,
+          "title":"No, " + text,
           "payload":"{ \"continue\": true}"
         },
       ]
