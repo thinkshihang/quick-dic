@@ -64,13 +64,13 @@ console.log('status code is ' + response.statusCode)
                     callback(utilities.getValues(results))
                 } else {
                     if (payloadJSON.results.length == 0) {
-                        callback([{"type": "text", "content": text + ' is not a word in my dictionary.'}])
+                        callback([[{"type": "text", "content": text + ' is not a word in my dictionary.'}]])
                     } else {
-                        callback([{"type": "text", "content": payloadJSON.results[0].senses[0].translation}])
+                        callback([[{"type": "text", "content": payloadJSON.results[0].senses[0].translation}]])
                     }
                 }
             } else {
-                callback([{"type": "text", "content": 'Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your help '}])
+                callback([[{"type": "text", "content": 'Sorry, request failed. Please try again. If the problem persists, please contact thinkshihang@gmail.com for support. Thanks for your help '}]])
             }
         })
     }
