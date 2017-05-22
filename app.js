@@ -268,6 +268,14 @@ function receivedMessage(event) {
       messageId, quickReplyPayload);
 
     // sendTextMessage(senderID, "Quick reply tapped");
+
+    var payloadJSON = {}
+    try {
+        payloadJSON = JSON.parse(quickReplyPayload)
+    } catch (e) {
+        payloadJSON = quickReplyPayload
+    }
+
     sendTypingOn(senderID)
     var word
     if (quickReplyPayload.continue) {
