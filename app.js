@@ -275,8 +275,18 @@ function receivedMessage(event) {
     } else {
         word = messageText
     }
-    dicApi.sendTranslationRequest(word, function(result) {
-        sendTextMessage(senderID, result)
+    dicApi.sendTranslationRequest(word, function(results) {
+        results.forEach(function(messages) {
+            messages.forEach(function(message) {
+                switch (message.type) {
+                    case "text":
+                        sendTextMessage(senderID, message.content)
+                        break
+                    case "audio":
+                        sendAudioMessage(senderID, message.content)
+                }
+            })
+        })
     });
     sendTypingOff(senderID)
     return;
