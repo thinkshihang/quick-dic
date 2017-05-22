@@ -269,7 +269,13 @@ function receivedMessage(event) {
 
     // sendTextMessage(senderID, "Quick reply tapped");
     sendTypingOn(senderID)
-    dicApi.sendTranslationRequest(messageText, function(result) {
+    var word
+    if (quickReplyPayload.continue) {
+        word = messageText.split(" ").slice(-1)[0]
+    } else {
+        word = messageText
+    }
+    dicApi.sendTranslationRequest(word, function(result) {
         sendTextMessage(senderID, result)
     });
     sendTypingOff(senderID)
@@ -772,17 +778,17 @@ function sendQuickReply(recipientId, text, suggestions) {
         {
           "content_type":"text",
           "title":suggestions[0],
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+          "payload":"{ \"continue\": false}"
         },
         {
           "content_type":"text",
           "title":suggestions[1],
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
+          "payload":"{ \"continue\": false}"
         },
         {
           "content_type":"text",
           "title":"No, continue with " + text,
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+          "payload":"{ \"continue\": true}"
         },
       ]
     }
