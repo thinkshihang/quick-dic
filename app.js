@@ -278,7 +278,7 @@ function receivedMessage(event) {
 
     sendTypingOn(senderID)
     var word
-    if (quickReplyPayload.continue) {
+    if (payloadJSON.continue) {
         word = messageText.split(" ").slice(-1)[0]
     } else {
         word = messageText
@@ -806,7 +806,7 @@ function sendQuickReply(recipientId, text, suggestions) {
         },
         {
           "content_type":"text",
-          "title":"No, " + text,
+          "title":"No, it's " + text,
           "payload":"{ \"continue\": true}"
         },
       ]
