@@ -38,7 +38,7 @@ console.log('status code is ' + response.statusCode)
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
                     if (result.headword.toUpperCase() == text.toUpperCase()) {
-                        if (result.datasets.includes(EN_CH_DICT)) {
+                        if (result.datasets.includes(EN_CH_DICT) && result.senses.length > 0) {
                             if (results.EN_CH_DICT) {
                                 results.EN_CH_DICT[0].content += " (" + result.part_of_speech + ") " + result.senses[0].translation
                             } else {
