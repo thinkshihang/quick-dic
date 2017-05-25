@@ -794,24 +794,27 @@ function sendQuickReply(recipientId, text, suggestions) {
     message: {
       text: "Do you mean:",
       quick_replies: [
-        {
-          "content_type":"text",
-          "title":suggestions[0],
-          "payload":"{ \"continue\": false}"
-        },
-        {
-          "content_type":"text",
-          "title":suggestions[1],
-          "payload":"{ \"continue\": false}"
-        },
-        {
-          "content_type":"text",
-          "title":"No, it's " + text,
-          "payload":"{ \"continue\": true}"
-        },
       ]
     }
   };
+
+  for (let i = 0; i < suggestions.length; i++) {
+      if (i < 3) {
+          messageData.message.quick_replies.push({
+              "content_type":"text",
+              "title":suggestions[i],
+              "payload":"{ \"continue\": false}"
+          })
+      } else {
+          break
+      }
+  }
+
+  messageData.message.quick_replies.push({
+      "content_type":"text",
+      "title":"No, it's " + text,
+      "payload":"{ \"continue\": true}"
+  })
 
   callSendAPI(messageData);
 }
