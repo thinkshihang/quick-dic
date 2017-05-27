@@ -40,17 +40,17 @@ console.log('status code is ' + response.statusCode)
                     if (result.headword.toUpperCase() == text.toUpperCase()) {
                         if (result.datasets.includes(EN_CH_DICT) && result.senses.length > 0) {
                             if (results.EN_CH_DICT) {
-                                results.EN_CH_DICT[0].content += "\n(" + result.part_of_speech + ") " + result.senses[0].translation
+                                results.EN_CH_DICT[0].content += "\n(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].translation
                             } else {
                                 results.EN_CH_DICT = []
-                                results.EN_CH_DICT.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].translation})
+                                results.EN_CH_DICT.push({"type": "text", "content": "(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].translation})
                             }
                         } else if (result.datasets.includes(LDOCE5)) {
                             if (results.LDOCE5) {
-                                results.LDOCE5[0].content += "\n(" + result.part_of_speech + ") " + result.senses[0].definition[0]
+                                results.LDOCE5[0].content += "\n(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].definition[0]
                             } else {
                                 results.LDOCE5 = []
-                                results.LDOCE5.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].definition[0]})
+                                results.LDOCE5.push({"type": "text", "content": "(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].definition[0]})
                             }
                             if (result.pronunciations && result.pronunciations.length > 0) {
                                 if (result.pronunciations[1]) {
