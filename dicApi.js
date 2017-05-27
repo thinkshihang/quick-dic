@@ -46,11 +46,12 @@ console.log('status code is ' + response.statusCode)
                                 results.EN_CH_DICT.push({"type": "text", "content": "(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].translation})
                             }
                         } else if (result.datasets.includes(LDOCE5)) {
+                            let partOfSpeech = result.part_of_speech ? result.part_of_speech : 'other'
                             if (results.LDOCE5) {
-                                results.LDOCE5[0].content += "\n(" + result.part_of_speech ? result.part_of_speech : 'other' + ") " + result.senses[0].definition[0]
+                                results.LDOCE5[0].content += "\n(" + partOfSpeech + ") " + result.senses[0].definition[0]
                             } else {
                                 results.LDOCE5 = []
-                                results.LDOCE5.push({"type": "text", "content": "(" + result.part_of_speech ? result.part_of_speech : 'other' + ") " + result.senses[0].definition[0]})
+                                results.LDOCE5.push({"type": "text", "content": "(" + partOfSpeech + ") " + result.senses[0].definition[0]})
                             }
                             if (result.pronunciations && result.pronunciations.length > 0) {
                                 if (result.pronunciations[1]) {
