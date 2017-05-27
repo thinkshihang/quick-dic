@@ -45,12 +45,14 @@ console.log('status code is ' + response.statusCode)
                                 results.EN_CH_DICT = []
                                 results.EN_CH_DICT.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].translation})
                             }
-                        } else if (result.datasets.includes(LDOCE5) && result.pronunciations && result.pronunciations.length > 0) {
+                        } else if (result.datasets.includes(LDOCE5)) {
                             if (results.LDOCE5) {
                                 results.LDOCE5[0].content += " (" + result.part_of_speech + ") " + result.senses[0].definition[0]
                             } else {
                                 results.LDOCE5 = []
                                 results.LDOCE5.push({"type": "text", "content": "(" + result.part_of_speech + ") " + result.senses[0].definition[0]})
+                            }
+                            if (result.pronunciations && result.pronunciations.length > 0) {
                                 if (result.pronunciations[1]) {
                                     results.LDOCE5.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[0].url})
                                 } else {
