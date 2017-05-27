@@ -5,7 +5,7 @@ module.exports = {
             values.push(obj[key])
         })
         return values
-    }
+    },
 
     getPartOfWord_CN: function (partOfSpeech) {
         switch (partOfSpeech) {
