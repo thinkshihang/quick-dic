@@ -18,12 +18,13 @@ module.exports = {
             case 'adverb':
                 return '副'
             case 'num':
+            case 'number':
                 return '数'
             case 'interj':
             case 'interjection':
-                return '感叹词'
+                return '感'
             default:
-                return partOfSpeech ? partOfSpeech : ''
+                return partOfSpeech ? partOfSpeech : '其他'
         }
     }
 }
