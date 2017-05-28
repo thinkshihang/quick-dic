@@ -1,6 +1,7 @@
 const
     request = require('request'),
     config = require('config'),
+    pluralize = require('pluralize'),
     utilities = require('./utilities');
 
 const PEARSON_API_KEY = (process.env.DICTIONARY_API_KEY) ?
@@ -34,10 +35,10 @@ console.log('status code is ' + response.statusCode)
                 }
 
                 var results = {}
-                // var resultCh, resultEn
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
-                    if (result.headword.toUpperCase() == text.toUpperCase()) {
+                    var headword = esult.headword
+                    if (headword.toUpperCase() === text.toUpperCase() || headword.toUpperCase() === pluralize(headword, 1).toUpperCase) {
                         if (result.datasets.includes(EN_CH_DICT) && result.senses.length > 0) {
                             if (results.EN_CH_DICT) {
                                 results.EN_CH_DICT[0].content += "\n(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].translation
