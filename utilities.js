@@ -20,6 +20,8 @@ module.exports = {
             case 'num':
             case 'number':
                 return '数'
+            case 'pronoun':
+                return '代'
             case 'interj':
             case 'interjection':
                 return '感'

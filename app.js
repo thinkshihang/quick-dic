@@ -153,9 +153,9 @@ app.get('/test', function(req, res) {
         let messageText = req.query.text
 
         // Test dict API
-        // dicApi.sendTranslationRequest(messageText, function(body) {
-        //     console.log(body)
-        // });
+        dicApi.sendTranslationRequest(messageText, function(body) {
+            console.log(body)
+        });
 
         // test typo
         // var Typo = require('typo-js');
@@ -165,8 +165,8 @@ app.get('/test', function(req, res) {
         // console.log(spellChecker.suggest(req.query.text))
 
         // test pluralize
-        var pluralize = require('pluralize')
-        console.log(pluralize(messageText, 1).toUpperCase())
+        // var pluralize = require('pluralize')
+        // console.log(pluralize(messageText, 1).toUpperCase())
 
     console.log('**********************')
 });
