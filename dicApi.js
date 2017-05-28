@@ -37,7 +37,7 @@ console.log('status code is ' + response.statusCode)
                 var results = {}
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
-                    var headword = esult.headword
+                    var headword = result.headword
                     if (headword.toUpperCase() === text.toUpperCase() || headword.toUpperCase() === pluralize(headword, 1).toUpperCase) {
                         if (result.datasets.includes(EN_CH_DICT) && result.senses.length > 0) {
                             if (results.EN_CH_DICT) {
