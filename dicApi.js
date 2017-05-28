@@ -38,7 +38,8 @@ console.log('status code is ' + response.statusCode)
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
                     var headword = result.headword
-                    if (headword.toUpperCase() === text.toUpperCase() || headword.toUpperCase() === pluralize(headword, 1).toUpperCase()) {
+                    if (headword.toUpperCase() === text.toUpperCase() ||
+                            (headword.indexOf(" ") == -1 && headword.toUpperCase() === pluralize(headword, 1).toUpperCase())) {
                         if (result.datasets.includes(EN_CH_DICT) && result.senses.length > 0) {
                             if (results.EN_CH_DICT) {
                                 results.EN_CH_DICT[0].content += "\n(" + utilities.getPartOfWord_CN(result.part_of_speech) + ") " + result.senses[0].translation
