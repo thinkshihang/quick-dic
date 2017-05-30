@@ -35,6 +35,7 @@ console.log('status code is ' + response.statusCode)
                 }
 
                 var results = {}
+                var containsAudio = false
                 for (var i = 0; i < payloadJSON.results.length; i++) {
                     let result = payloadJSON.results[i]
                     var headword = result.headword
@@ -55,12 +56,13 @@ console.log('status code is ' + response.statusCode)
                                 results.LDOCE5 = []
                                 results.LDOCE5.push({"type": "text", "content": "(" + partOfSpeech + ") " + result.senses[0].definition[0]})
                             }
-                            if (result.pronunciations && result.pronunciations.length > 0) {
+                            if (!containsAudio && result.pronunciations && result.pronunciations.length > 0) {
                                 if (result.pronunciations[1]) {
                                     results.LDOCE5.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[1].audio[0].url})
                                 } else {
                                     results.LDOCE5.push({"type": "audio", "content": DICTIONARY_SERVER_URL + result.pronunciations[0].audio[1].url})
                                 }
+                                containsAudio = true
                             }
                         }
                     }
