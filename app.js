@@ -340,7 +340,7 @@ console.log('**********************')
                 })
             })
 
-            cseApi.sendFetchImagesRequest(word, function(images) {
+            cseApi.sendFetchImagesRequest(messageText, function(images) {
                 sendGenericMessage(senderID, images)
             })
         });
