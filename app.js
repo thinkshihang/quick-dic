@@ -19,6 +19,7 @@ const
   request = require('request');
 
 var dicApi = require('./dicApi');
+var cseApi = require('./googleCSEApi');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -153,9 +154,9 @@ app.get('/test', function(req, res) {
         let messageText = req.query.text
 
         // Test dict API
-        dicApi.sendTranslationRequest(messageText, function(body) {
-            console.log(body)
-        });
+        // dicApi.sendTranslationRequest(messageText, function(body) {
+        //     console.log(body)
+        // });
 
         // test typo
         // var Typo = require('typo-js');
@@ -167,6 +168,11 @@ app.get('/test', function(req, res) {
         // test pluralize
         // var pluralize = require('pluralize')
         // console.log(pluralize(messageText, 1).toUpperCase())
+
+        // test google cse api
+        cseApi.sendFetchImagesRequest(messageText, function(body) {
+            console.log(body)
+        })
 
     console.log('**********************')
 });
@@ -330,6 +336,9 @@ console.log('**********************')
                 })
             })
 
+            cseApi.sendFetchImagesRequest(messageText, function(images) {
+                sendGenericMessage(senderID, images)
+            })
         });
     } else {
         var suggestions = spellChecker.suggest(messageText)
@@ -371,9 +380,9 @@ console.log('**********************')
         sendButtonMessage(senderID);
         break;
 
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
+    //   case 'generic':
+    //     sendGenericMessage(senderID);
+    //     break;
 
       case 'receipt':
         sendReceiptMessage(senderID);
@@ -676,7 +685,7 @@ function sendButtonMessage(recipientId) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId) {
+function sendGenericMessage(recipientId, images) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -686,39 +695,29 @@ function sendGenericMessage(recipientId) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url: SERVER_URL + "/assets/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",
-            image_url: SERVER_URL + "/assets/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
+          elements: []
         }
       }
     }
   };
+
+    var elements = []
+    for (var i = 0; i < images.length; i++) {
+        var element = {
+            title: "Test",
+            image_url: images[i]
+        }
+
+        elements.push(element)
+
+        if (i >= 3) {
+            break
+        }
+    }
+
+    messageData.message.attachment.payload.elements.push(elements)
+
+
 
   callSendAPI(messageData);
 }
