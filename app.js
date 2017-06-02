@@ -340,6 +340,9 @@ console.log('**********************')
                 })
             })
 
+            cseApi.sendFetchImagesRequest(word, function(images) {
+                sendGenericMessage(senderID, images)
+            })
         });
     } else {
         var suggestions = spellChecker.suggest(messageText)
@@ -697,33 +700,14 @@ function sendGenericMessage(recipientId, images) {
         payload: {
           template_type: "generic",
           elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url: images[0],
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
+            title: "Pic",
+            image_url: images[0]
           }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",
-            image_url: images[1],
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
+            title: "Pic",
+            image_url: images[1]
+          }, {
+            title: "Pic",
+            image_url: images[2]
           }]
         }
       }
