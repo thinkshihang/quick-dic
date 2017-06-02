@@ -308,6 +308,10 @@ function receivedMessage(event) {
                 }
             })
         })
+
+        cseApi.sendFetchImagesRequest(word, function(images) {
+            sendGenericMessage(senderID, images)
+        })
     });
 
     sendTypingOff(senderID)
@@ -336,9 +340,6 @@ console.log('**********************')
                 })
             })
 
-            cseApi.sendFetchImagesRequest(messageText, function(images) {
-                sendGenericMessage(senderID, images)
-            })
         });
     } else {
         var suggestions = spellChecker.suggest(messageText)
@@ -379,7 +380,7 @@ console.log('**********************')
       case 'button':
         sendButtonMessage(senderID);
         break;
-
+    //
     //   case 'generic':
     //     sendGenericMessage(senderID);
     //     break;
@@ -695,30 +696,39 @@ function sendGenericMessage(recipientId, images) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: []
+          elements: [{
+            title: "rift",
+            subtitle: "Next-generation virtual reality",
+            item_url: "https://www.oculus.com/en-us/rift/",
+            image_url: images[0],
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/rift/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for first bubble",
+            }],
+          }, {
+            title: "touch",
+            subtitle: "Your Hands, Now in VR",
+            item_url: "https://www.oculus.com/en-us/touch/",
+            image_url: images[1],
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/touch/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for second bubble",
+            }]
+          }]
         }
       }
     }
   };
-
-    var elements = []
-    for (var i = 0; i < images.length; i++) {
-        var element = {
-            title: "Test"
-            // title: "Test",
-            // image_url: images[i]
-        }
-
-        elements.push(element)
-
-        if (i >= 3) {
-            break
-        }
-    }
-console.log('elements ---- ', images)
-    messageData.message.attachment.payload.elements.push(elements)
-
-
 
   callSendAPI(messageData);
 }
