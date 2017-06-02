@@ -704,7 +704,7 @@ function sendGenericMessage(recipientId, images) {
     var elements = []
     for (var i = 0; i < images.length; i++) {
         var element = {
-            itle: "Test"
+            title: "Test"
             // title: "Test",
             // image_url: images[i]
         }
