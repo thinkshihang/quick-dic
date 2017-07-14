@@ -32,7 +32,7 @@ module.exports = {
                 }
                 var images = []
                 payloadJSON.items.forEach(function(item) {
-                    images.push(item.image.thumbnailLink)
+                    images.push(item.link)
                 })
                 callback(images)
             } else {
